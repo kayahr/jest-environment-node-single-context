@@ -1,28 +1,32 @@
 {
-  "$schema": "http://json.schemastore.org/package",
-  "name": "jest-environment-node-single-context",
-  "version": "26.1.0",
-  "description": "Jest environment for Node with single context",
-  "keywords": [
-    "jest",
-    "environment"
-  ],
-  "license": "MIT",
-  "main": "SingleContextNodeEnvironment.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/kayahr/jest-environment-node-single-context"
-  },
-  "scripts": {
-    "test": "jest"
-  },
-  "files": [
-    "SingleContextNodeEnvironment.js"
-  ],
-  "devDependencies": {
-    "jest": "^26.1.0"
-  },
-  "dependencies": {
-    "jest-environment-node": "^26.1.0"
-  }
+    "$schema": "http://json.schemastore.org/package",
+    "name": "jest-environment-node-single-context",
+    "version": "26.1.0",
+    "description": "Jest environment for Node with single context",
+    "keywords": [
+        "jest",
+        "environment"
+    ],
+    "license": "MIT",
+    "main": "SingleContextNodeEnvironment.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/kayahr/jest-environment-node-single-context"
+    },
+    "scripts": {
+        "test": "jest"
+    },
+    "files": [
+        "SingleContextNodeEnvironment.js"
+    ],
+    "funding": "https://github.com/kayahr/jest-environment-node-single-context?sponsor=1",
+    "jest": {
+        "testEnvironment": "./SingleContextNodeEnvironment"
+    },
+    "devDependencies": {
+        "jest": "26.2.2"
+    },
+    "dependencies": {
+        "jest-environment-node": "^26.2.0"
+    }
 }
