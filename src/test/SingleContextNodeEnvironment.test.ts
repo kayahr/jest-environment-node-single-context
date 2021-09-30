@@ -5,6 +5,7 @@
 
 import fs from "fs";
 import util from "util";
+import v8 from "v8";
 
 const readFile = util.promisify(fs.readFile);
 
@@ -85,5 +86,11 @@ describe("instanceof", () => {
         expect(new BigInt64Array([]) instanceof globalTypedArrayType).toBe(true);
         expect(new Float32Array([ 1, 2, 3 ]) instanceof globalTypedArrayType).toBe(true);
         expect(new Float64Array([ 1, 2, 3 ]) instanceof globalTypedArrayType).toBe(true);
+    });
+
+    it("works with v8 serialize/deserialize", () => {
+        const m1 = new Map();
+        const m2 = v8.deserialize(v8.serialize(m1));
+        expect(m1).toEqual(m2);
     });
 });
