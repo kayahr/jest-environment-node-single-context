@@ -1,7 +1,6 @@
 {
-    "cSpell.words": [
-        "Reimer",
-        "instanceof",
-        "kayahr"
-    ]
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "files.exclude": {
+        "lib": true
+    }
 }

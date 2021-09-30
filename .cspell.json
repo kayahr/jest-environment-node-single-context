@@ -1,0 +1,24 @@
+{
+    "version": "0.2",
+    "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/master/cspell.schema.json",
+    "files": [
+        "**/*"
+    ],
+    "enabledLanguageIds": [
+        "markdown",
+        "typescript"
+    ],
+    "ignorePaths": [
+        "node_modules",
+        "package-lock.json",
+        "git",
+        "lib",
+        "*.log",
+        "*.tgz"
+    ],
+    "words": [
+        "instanceof",
+        "Reimer"
+    ],
+    "language": "en"
+}
