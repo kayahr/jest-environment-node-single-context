@@ -35,7 +35,7 @@ class SingleContextNodeEnvironment extends NodeEnvironment {
         this.global = global as unknown as Global.Global;
     }
 
-    public getVmContext(): Context | null {
+    public override getVmContext(): Context | null {
         // Return special context which is handled specially in the hacked `script.runInContext` function
         return RUN_IN_THIS_CONTEXT;
     }
