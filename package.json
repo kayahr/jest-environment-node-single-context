@@ -1,7 +1,7 @@
 {
     "$schema": "http://json.schemastore.org/package",
     "name": "jest-environment-node-single-context",
-    "version": "27.3.0",
+    "version": "28.0.0",
     "description": "Jest environment for Node with single context",
     "keywords": [
         "jest",
