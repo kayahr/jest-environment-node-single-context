@@ -5,7 +5,8 @@
 
 import { Context, Script } from "vm";
 import NodeEnvironment from "jest-environment-node";
-import type { Config, Global } from '@jest/types';
+import type { Global } from '@jest/types';
+import type { JestEnvironmentConfig, EnvironmentContext } from '@jest/environment';
 
 /** Special context which is handled specially in the hacked runInContext method below */
 const RUN_IN_THIS_CONTEXT = {}
@@ -28,8 +29,8 @@ Script.prototype.runInContext = function(context, options) {
 }
 
 class SingleContextNodeEnvironment extends NodeEnvironment {
-    constructor(config: Config.ProjectConfig) {
-        super(config);
+    constructor(config: JestEnvironmentConfig, context: EnvironmentContext) {
+        super(config, context);
 
         // Use shared global environment for all tests
         this.global = global as unknown as Global.Global;
