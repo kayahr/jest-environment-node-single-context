@@ -17,7 +17,14 @@ function getSuperClass(cls: Function): Function {
 describe("instanceof", () => {
     const buffers = fs.readdirSync(__dirname);
     const buffer = fs.readFileSync(__filename);
-    const error = (() => { try { fs.readFileSync("/"); } catch (e) { return e; } })() as Error;
+    const error = (() => {
+        try {
+            fs.readFileSync("/");
+            return null;
+        } catch (e) {
+            return e;
+        }
+    })() as Error;
     const promise = readFile(__filename);
 
     const nodeArrayType = buffers.constructor;
