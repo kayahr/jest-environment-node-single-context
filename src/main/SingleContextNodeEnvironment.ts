@@ -11,7 +11,7 @@ import { LegacyFakeTimers, ModernFakeTimers } from "@jest/fake-timers";
 import { ModuleMocker } from "jest-mock";
 
 /** Special context which is handled specially in the hacked runInContext method below */
-const RUN_IN_THIS_CONTEXT = {}
+const singleContexts = new WeakSet<Context>();
 
 /** Remembered original runInContext method. */
 const origRunInContext = Script.prototype.runInContext;
@@ -20,10 +20,10 @@ const origRunInContext = Script.prototype.runInContext;
  * Ugly hack to allow Jest to just use a single Node VM context. The Jest code in question is in a large private
  * method of the standard Jest runtime and it would be a lot of code-copying to create a custom runtime which
  * replaces the script run code. So we hack into the `script.runInContext` method instead to redirect it to
- * `script.runInThisContext` when environment returns the special [[RUN_IN_THIS_CONTEXT]] context.
+ * `script.runInThisContext` for vm contexts recorded in `singleContexts` set.
  */
 Script.prototype.runInContext = function(context, options) {
-    if (context === RUN_IN_THIS_CONTEXT) {
+    if (singleContexts.has(context)) {
         return this.runInThisContext(options);
     } else {
         return origRunInContext.call(this, context, options);
@@ -51,6 +51,11 @@ class SingleContextNodeEnvironment extends NodeEnvironment {
     constructor(config: JestEnvironmentConfig, context: EnvironmentContext) {
         super(config, context);
 
+        if (this.context != null) {
+            // Record the VM context of this environment so the hacked `script.runInContext` redirects the call to `script.runInThisContext` for this context.
+            singleContexts.add(this.context);
+        }
+
         // Use shared global environment for all tests
         this.global = global as unknown as Global.Global;
 
@@ -68,11 +73,6 @@ class SingleContextNodeEnvironment extends NodeEnvironment {
             config: config.projectConfig,
             global
         });
-    }
-
-    public override getVmContext(): Context | null {
-        // Return special context which is handled specially in the hacked `script.runInContext` function
-        return RUN_IN_THIS_CONTEXT;
     }
 }
 
