@@ -3,7 +3,7 @@
  * See LICENSE.md for licensing information.
  */
 
-import { Context, Script } from "vm";
+import { createContext, Context, Script } from "vm";
 import NodeEnvironment from "jest-environment-node";
 import type { Global } from "@jest/types";
 import type { JestEnvironmentConfig, EnvironmentContext } from "@jest/environment";
@@ -51,13 +51,19 @@ class SingleContextNodeEnvironment extends NodeEnvironment {
     constructor(config: JestEnvironmentConfig, context: EnvironmentContext) {
         super(config, context);
 
+        // Use shared global environment for all tests
+        this.global = global as unknown as Global.Global;
+
+        // Recreate context using the shared global environment. This fixes the environment for ESM module stuff of Jest (which doesn't just use the context
+        // for `script.runInContext`) but a few type mismatches are still there unfortunately. For CJS mode this is irrelevant because calls for
+        // `script.runInContext` using this context are always redirected to `script.runInThisContext`. All this would not be necessary if we could just get
+        // the CURRENT vm context. But Node API doesn't allow that.
+        this.context = createContext(global);
+
         if (this.context != null) {
             // Record the VM context of this environment so the hacked `script.runInContext` redirects the call to `script.runInThisContext` for this context.
             singleContexts.add(this.context);
         }
-
-        // Use shared global environment for all tests
-        this.global = global as unknown as Global.Global;
 
         // Install fake timers again, this time with shared global environment
         this.fakeTimers = new LegacyFakeTimers({
